@@ -17,7 +17,7 @@ This adapter implements Inertia v3 [protocol](https://inertiajs.com/docs/v3/core
 
 ## Installation
 ```sh
-gleam add gleam_inertia
+gleam add wisp_inertia
 ```
 
 ## Usage
