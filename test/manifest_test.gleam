@@ -1,6 +1,6 @@
 import gleam/list
 import gleeunit
-import manifest
+import internal/manifest
 
 pub fn main() -> Nil {
   gleeunit.main()

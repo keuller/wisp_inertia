@@ -1,5 +1,3 @@
-import context
-import errors
 import file_streams/file_stream
 import file_streams/file_stream_error
 import gleam/list
@@ -7,7 +5,9 @@ import gleam/result
 import gleam/string
 import globlin
 import globlin_fs
-import manifest
+import internal/context
+import internal/errors
+import internal/manifest
 
 pub fn exist_template() -> Result(Bool, errors.InertiaError) {
   let assert Ok(pattern) = globlin.new_pattern("**/index.html")

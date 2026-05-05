@@ -1,4 +1,3 @@
-import context
 import gleam/http.{Delete, Patch, Post, Put}
 import gleam/http/request
 import gleam/http/response.{Response as HttpResponse}
@@ -7,9 +6,10 @@ import gleam/list
 import gleam/option.{type Option, None}
 import gleam/result
 import gleam/string
-import manifest
-import props
-import template
+import internal/context
+import internal/manifest
+import internal/props
+import internal/template
 import wisp.{Text}
 
 const inertia_header: String = "X-Inertia"
