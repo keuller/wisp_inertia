@@ -1,7 +1,7 @@
 # Inertia.js adapter for Gleam/Wisp
 
-[![Package Version](https://img.shields.io/hexpm/v/gleam_inertia)](https://hex.pm/packages/inertia)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gleam_inertia/)
+[![Package Version](https://img.shields.io/hexpm/v/gleam_inertia)](https://hex.pm/packages/wisp_inertia)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/wisp_inertia/)
 
 ## Roadmap
 
@@ -122,7 +122,6 @@ The root HTML template file must have this content. The special comments `<!-- @
 </html>
 
 ```
-Further documentation can be found at <https://hexdocs.pm/gleam_inertia>.
 
 ```typescript
 // priv/app/app.ts file
@@ -152,6 +151,8 @@ defineProps({
 </template>
 ```
 
+Further documentation can be found at <https://hexdocs.pm/wisp_inertia>.
+
 ## Development
 
 ```sh
@@ -165,8 +166,8 @@ gleam test  # Run the tests
 
 ## Other Community Adapters
 
-Full list of community adapters is located on [inertiajs.com](https://inertiajs.com/community-adapters).
+Full list of community adapters is located on [inertiajs.com](https://inertiajs.com/docs/v3/installation/community-adapters).
 
 ## License
 
-`gleam_inertia` is released under the [Apache 2.0] License.
+`wisp_inertia` is released under the [Apache 2.0] License.
