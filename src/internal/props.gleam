@@ -39,16 +39,14 @@ pub type PageObject {
 }
 
 pub fn page_object_to_json(po: PageObject, ctx: RenderContext) -> json.Json {
+  let default_props =
+    resolve_props(ctx, po.props)
+    |> list.append([#("errors", json.object(resolve_props(ctx, po.errors)))])
+
   let view_props = case ctx.first_load {
-    True ->
-      resolve_props(ctx, po.props)
-      |> list.append([#("errors", json.object(resolve_props(ctx, po.errors)))])
-      |> list.append(resolve_props(ctx, po.props))
-      |> json.object
+    True -> default_props |> json.object
     False ->
-      resolve_props(ctx, po.props)
-      |> list.append([#("errors", json.object(resolve_props(ctx, po.errors)))])
-      |> list.append(resolve_props(ctx, po.props))
+      default_props
       |> list.append(resolve_props(ctx, po.defers))
       |> json.object
   }

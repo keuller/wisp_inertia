@@ -54,27 +54,27 @@ fn manifest_entries() -> List(manifest.Entry) {
 }
 
 /// Initializes the inertia context
-/// 
+///
 pub fn init(app: String, version: String) {
   context.add_entry("app", app)
   context.add_entry("version", version)
 }
 
 /// Gets an entry from the inertia context, if it not exists returns an empty String
-/// 
+///
 pub fn from_context(name: String) -> String {
   context.get_orelse(name, "")
 }
 
 /// Add an entry to the inertia context
-/// 
+///
 pub fn add_context(name: String, value: String) {
   context.add_entry(name, value)
 }
 
 /// Creates the root view based on index.html file when the request is a full page load.
 /// If the index.html file is not found, it will render a default error message
-/// 
+///
 pub fn root_view(state: String) -> String {
   let app_name = context.get_orelse("app", "")
   let pdir = result.unwrap(wisp.priv_directory(app_name), "")
@@ -173,9 +173,9 @@ fn new_render_context(req: wisp.Request) -> props.RenderContext {
     Error(_) -> []
   }
 
-  let first_load = case component {
-    "" -> True
-    _ -> False
+  let first_load = case component, partials {
+    "", [] -> True
+    _, _ -> False
   }
   let version = context.get_orelse("version", "v1")
   props.RenderContext(component, version, first_load, partials, excepts)
@@ -206,12 +206,12 @@ pub fn render(
 
 /// Creates a reponse with status code 303 for Post, Patch, Put or Delete request,
 /// otherwise the status code is 302
-/// 
+///
 /// #Example
 /// ```gleam
 /// inertia.redirect(req, "/")
 /// ```
-/// 
+///
 pub fn redirect(req: wisp.Request, path: String) -> wisp.Response {
   case req.method {
     Post | Put | Patch | Delete -> wisp.redirect(path)

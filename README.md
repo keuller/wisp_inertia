@@ -13,7 +13,7 @@ This adapter implements Inertia v3 [protocol](https://inertiajs.com/docs/v3/core
 - [ ] Scroll Props
 - [ ] Flash Data
 - [ ] SSR
-- [ ] Examples
+- [X] Examples
 
 ## Installation
 ```sh
@@ -55,7 +55,7 @@ import inertia
 import wisp.{type Request, type Response}
 
 pub fn register(req: Request, handle_req: fn(Request) -> Response) -> Response {
-  let assert Ok(priv_dir) = wisp.priv_directory(inertia.from_context("demo"))
+  let assert Ok(priv_dir) = wisp.priv_directory("demo")
 
   use <- wisp.log_request(req)
   use <- wisp.rescue_crashes
@@ -104,7 +104,7 @@ priv
 * `static` folder will be used as production-ready static assets.
 * `shared`folder is optional, but it's recommended to add your shared components there
 
-The root HTML template file must have this content. The special comments `<!-- @inertiaHead -->` and `<!-- @inertia -->` will be replaced by the HTML tags for Inertia.
+The root HTML template file must have this content. The special comments `!-- @inertiaHead --` and `!-- @inertia --` will be replaced by the HTML tags for Inertia.
 
 ```html
 // priv/index.html
@@ -162,7 +162,7 @@ gleam test  # Run the tests
 
 ## Examples
 
-`TBD`
+- [Simple Todo](examples/todo_app)
 
 ## Other Community Adapters
 
