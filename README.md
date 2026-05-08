@@ -10,8 +10,9 @@ This adapter implements Inertia v3 [protocol](https://inertiajs.com/docs/v3/core
 - [X] Once Props
 - [X] Deferred Props
 - [X] Merge Props
-- [ ] Scroll Props
+- [X] Shared Props
 - [ ] Flash Data
+- [ ] Scroll Props
 - [ ] SSR
 - [X] Examples
 
@@ -154,7 +155,53 @@ defineProps({
 </template>
 ```
 
-Further documentation can be found at <https://hexdocs.pm/wisp_inertia>.
+## Properties
+
+### Shared Props
+
+```gleam
+  // adds a shared property
+  inertia.shared_add("test", "Share message")
+
+  // gets a shared property
+  let msg = inertia.shared_get("test")
+  echo msg
+```
+
+## Error
+
+```gleam
+  inertia.add_error("error", "Some error message")
+```
+
+## Once Props
+
+```gleam
+  inertia.new_page_object(req, "index")
+  |> inertia.add_once(po, "user", fn() {
+    "Administrator"
+  })
+```
+
+### Deferred Props
+
+```gleam
+  // "default" group
+  inertia.new_page_object(req, "index")
+  |> inertia.add_defer(
+    "contacts",
+    fn() { Ok(json.array(get_contacts(), of: contact_to_json)) },
+    option.None,
+  )
+
+  // especify a specific group to split requests
+  inertia.new_page_object(req, "index")
+  |> inertia.add_defer(
+    "contacts",
+    fn() { Ok(json.array(get_contacts(), of: contact_to_json)) },
+    option.Some("contacts"), // "contacts" group
+  )
+```
 
 ## Development
 
@@ -174,4 +221,4 @@ Full list of community adapters is located on [inertiajs.com](https://inertiajs.
 
 ## License
 
-`wisp_inertia` is released under the [Apache 2.0] License.
+`wisp_inertia` is released under the [Apache 2.0](https://github.com/keuller/wisp_inertia/blob/main/LICENSE) License.

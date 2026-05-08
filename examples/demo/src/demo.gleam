@@ -11,6 +11,8 @@ pub fn main() -> Nil {
   inertia.init("demo", "v1")
   let secret_key = wisp.random_string(32)
 
+  inertia.shared_add("test", "Share message")
+
   let assert Ok(_) =
     wisp_mist.handler(router.handle_request, secret_key)
     |> mist.new

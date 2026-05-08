@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.0 - 2026-05-08
+
+- Added support for Shared props
+
 ## v0.5.3 - 2026-05-08
 
 - Added support for Merge props

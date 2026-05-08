@@ -35,9 +35,18 @@ pub type PageObject {
     props: List(PageProp),
     errors: List(PageProp),
     defers: List(PageProp),
+    shared: List(PageProp),
     version: String,
     clear_history: option.Option(Bool),
   )
+}
+
+pub fn dict_to_prop(d: dict.Dict(String, String)) -> List(PageProp) {
+  dict.keys(d)
+  |> list.map(fn(key: String) {
+    let assert Ok(val) = dict.get(d, key)
+    BaseProp(key, json.string(val))
+  })
 }
 
 pub fn page_object_to_json(po: PageObject, ctx: RenderContext) -> json.Json {
@@ -46,10 +55,14 @@ pub fn page_object_to_json(po: PageObject, ctx: RenderContext) -> json.Json {
     |> list.append([#("errors", json.object(resolve_props(ctx, po.errors)))])
 
   let view_props = case ctx.first_load {
-    True -> default_props |> json.object
+    True ->
+      default_props
+      |> list.append(resolve_props(ctx, po.shared))
+      |> json.object
     False ->
       default_props
       |> list.append(resolve_props(ctx, po.defers))
+      |> list.append(resolve_props(ctx, po.shared))
       |> json.object
   }
 
@@ -80,7 +93,12 @@ pub fn page_object_to_json(po: PageObject, ctx: RenderContext) -> json.Json {
     option.Some(merge) -> list.append(defer_resolved, [merge])
   }
 
-  json.object(merge_resolved)
+  let shared_resolved = case resolve_shared(po.shared) {
+    option.None -> merge_resolved
+    option.Some(shared) -> list.append(merge_resolved, [shared])
+  }
+
+  json.object(shared_resolved)
 }
 
 fn should_resolve(ctx: RenderContext, p: PageProp) {
@@ -163,6 +181,18 @@ fn resolve_defer_prop(
   case items {
     [] -> option.None
     _ -> option.Some(#("deferredProps", json.object(items)))
+  }
+}
+
+fn resolve_shared(list: List(PageProp)) -> option.Option(#(String, json.Json)) {
+  case list {
+    [] -> option.None
+    _ -> {
+      let prop_names =
+        list
+        |> list.map(fn(p: PageProp) { p.name })
+      option.Some(#("sharedProps", json.array(prop_names, of: json.string)))
+    }
   }
 }
 

@@ -68,10 +68,22 @@ pub fn from_context(name: String) -> String {
   context.get_orelse(name, "")
 }
 
-/// Add an entry to the inertia context
+/// Adds an entry to the Inertia context
 ///
 pub fn add_context(name: String, value: String) {
   context.add_entry(name, value)
+}
+
+/// Adds a shared value to the Inertia context
+///
+pub fn shared_add(name: String, value: String) {
+  context.shared_add_entry(name, value)
+}
+
+/// Gets a shared value from the Inertia context
+///
+pub fn shared_get(name: String) -> String {
+  context.shared_get_orelse(name, "")
 }
 
 /// Creates the root view based on index.html file when the request is a full page load.
@@ -166,6 +178,7 @@ pub fn new_page_object(
     props: list.new(),
     errors: list.new(),
     defers: list.new(),
+    shared: props.dict_to_prop(context.shared_get_all()),
     version: context.get_orelse("version", "v1"),
     clear_history: None,
   )
