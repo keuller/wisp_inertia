@@ -1,6 +1,6 @@
 # Inertia.js adapter for Gleam/Wisp
 
-[![Package Version](https://img.shields.io/hexpm/v/gleam_inertia)](https://hex.pm/packages/wisp_inertia)
+[![Package Version](https://img.shields.io/hexpm/v/wisp_inertia)](https://hex.pm/packages/wisp_inertia)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/wisp_inertia/)
 
 ## Roadmap
@@ -9,7 +9,7 @@ This adapter implements Inertia v3 [protocol](https://inertiajs.com/docs/v3/core
 
 - [X] Once Props
 - [X] Deferred Props
-- [ ] Merge Props
+- [X] Merge Props
 - [ ] Scroll Props
 - [ ] Flash Data
 - [ ] SSR
@@ -71,6 +71,9 @@ pub fn register(req: Request, handle_req: fn(Request) -> Response) -> Response {
 
 ```gleam
 // router.gleam file
+import gleam/json
+import inertia
+import wisp.{type Request, type Response}
 
 pub fn handle_request(req: Request) -> Response {
   use req <- middleware.register(req)
@@ -162,6 +165,7 @@ gleam test  # Run the tests
 
 ## Examples
 
+- [Demo](examples/demo)
 - [Simple Todo](examples/todo_app)
 
 ## Other Community Adapters

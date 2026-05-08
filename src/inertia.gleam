@@ -14,6 +14,8 @@ import wisp.{Text}
 
 const inertia_header: String = "X-Inertia"
 
+const inertia_reset: String = "X-Inertia-Reset"
+
 const inertia_except: String = "X-Inertia-Except-Once-Props"
 
 const inertia_partial: String = "X-Inertia-Partial-Data"
@@ -142,6 +144,16 @@ pub fn add_defer(
   props.PageObject(..self, defers: new_props)
 }
 
+/// Adds a Merge property
+pub fn add_merge(
+  self: props.PageObject,
+  name: String,
+  value: fn() -> json.Json,
+) -> props.PageObject {
+  let new_props = list.append(self.props, [props.MergeProp(name, value)])
+  props.PageObject(..self, props: new_props)
+}
+
 /// Creates a page object that will manage all properties for the current page component.
 ///
 pub fn new_page_object(
@@ -173,12 +185,17 @@ fn new_render_context(req: wisp.Request) -> props.RenderContext {
     Error(_) -> []
   }
 
+  let resets = case request.get_header(req, inertia_reset) {
+    Ok(str) -> string.split(str, ",")
+    Error(_) -> []
+  }
+
   let first_load = case component, partials {
     "", [] -> True
     _, _ -> False
   }
   let version = context.get_orelse("version", "v1")
-  props.RenderContext(component, version, first_load, partials, excepts)
+  props.RenderContext(component, version, first_load, resets, partials, excepts)
 }
 
 /// Renders a Inertia component based on the PageObject.

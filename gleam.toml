@@ -1,5 +1,5 @@
 name = "wisp_inertia"
-version = "0.5.2"
+version = "0.5.3"
 description = "The Inertia.js adapter for Gleam/Wisp"
 licences = ["Apache-2.0"]
 gleam = ">= 1.14.0"
