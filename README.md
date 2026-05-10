@@ -11,7 +11,7 @@ This adapter implements Inertia v3 [protocol](https://inertiajs.com/docs/v3/core
 - [X] Deferred Props
 - [X] Merge Props
 - [X] Shared Props
-- [ ] Flash Data
+- [X] Flash Data
 - [ ] Scroll Props
 - [ ] SSR
 - [X] Examples
@@ -171,7 +171,8 @@ defineProps({
 ## Error
 
 ```gleam
-  inertia.add_error("error", "Some error message")
+  inertia.new_page_object(req, "index")
+  |> inertia.add_error("error", "Some error message")
 ```
 
 ## Once Props
@@ -201,6 +202,24 @@ defineProps({
     fn() { Ok(json.array(get_contacts(), of: contact_to_json)) },
     option.Some("contacts"), // "contacts" group
   )
+```
+
+## Flash Messages
+
+Adding a single message
+
+```gleam
+  inertia.add_flash(req, "message", "Test flash message...")
+  |> inertia.redirect("/")
+```
+
+Adding multiple messages.
+
+```gleam
+  let messages = [flash.FlashProp("message1", ""), flash.FlashProp("message2", "")]
+  
+  inertia.add_flashes(req, "messages", messages)
+  |> inertia.redirect("/")
 ```
 
 ## Development

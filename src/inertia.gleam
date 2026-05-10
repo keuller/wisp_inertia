@@ -7,6 +7,7 @@ import gleam/option.{type Option, None}
 import gleam/result
 import gleam/string
 import internal/context
+import internal/flash
 import internal/manifest
 import internal/props
 import internal/template
@@ -157,6 +158,7 @@ pub fn add_defer(
 }
 
 /// Adds a Merge property
+///
 pub fn add_merge(
   self: props.PageObject,
   name: String,
@@ -164,6 +166,25 @@ pub fn add_merge(
 ) -> props.PageObject {
   let new_props = list.append(self.props, [props.MergeProp(name, value)])
   props.PageObject(..self, props: new_props)
+}
+
+/// Adds a flash message on the request. The flash message value IS NOT persisted between requests.
+///
+pub fn add_flash(
+  req: wisp.Request,
+  name: String,
+  value: String,
+) -> wisp.Request {
+  flash.set_flash_message(req, name, value)
+}
+
+/// Adds multiple flash messages on the request. The flash message value IS NOT persisted between requests.
+///
+pub fn add_flashes(
+  req: wisp.Request,
+  messages: List(flash.FlashProp),
+) -> wisp.Request {
+  flash.set_flash_messages(req, messages)
 }
 
 /// Creates a page object that will manage all properties for the current page component.
@@ -208,7 +229,15 @@ fn new_render_context(req: wisp.Request) -> props.RenderContext {
     _, _ -> False
   }
   let version = context.get_orelse("version", "v1")
-  props.RenderContext(component, version, first_load, resets, partials, excepts)
+  props.RenderContext(
+    req,
+    component,
+    version,
+    first_load,
+    resets,
+    partials,
+    excepts,
+  )
 }
 
 /// Renders a Inertia component based on the PageObject.
@@ -229,8 +258,8 @@ pub fn render(
     |> json.to_string
 
   case request.get_header(req, inertia_header) {
-    Ok(_) -> wisp.json_response(po, 200)
-    _ -> wisp.ok() |> wisp.html_body(root_view(po))
+    Ok(_) -> wisp.json_body(wisp.ok(), po)
+    _ -> wisp.html_body(wisp.ok(), root_view(po))
   }
 }
 
@@ -244,7 +273,21 @@ pub fn render(
 ///
 pub fn redirect(req: wisp.Request, path: String) -> wisp.Response {
   case req.method {
-    Post | Put | Patch | Delete -> wisp.redirect(path)
+    Post | Put | Patch | Delete -> {
+      let cookies =
+        req.headers
+        |> list.filter(fn(pair: #(String, String)) {
+          pair.0 == flash.inertia_flash_name
+        })
+
+      case cookies {
+        [ic] -> {
+          wisp.redirect(path)
+          |> wisp.set_cookie(req, ic.0, ic.1, wisp.PlainText, 10)
+        }
+        _ -> wisp.redirect(path)
+      }
+    }
     _ -> HttpResponse(302, [#("location", path)], Text(""))
   }
 }

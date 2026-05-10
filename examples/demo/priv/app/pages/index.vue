@@ -2,6 +2,7 @@
 import { Head, Deferred } from "@inertiajs/vue3";
 import ContactList from "../shared/ContactList.vue";
 import Notifications from "../shared/Notifications.vue";
+import FlashMessages from "../shared/FlashMessages.vue";
 
 defineProps({
     title: String,
@@ -22,6 +23,9 @@ defineProps({
             </template>
             <ContactList :data="contacts" />
         </Deferred>
+
         <Notifications :messages="messages" />
+
+        <FlashMessages />
     </div>
 </template>

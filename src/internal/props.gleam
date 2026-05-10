@@ -3,6 +3,8 @@ import gleam/json
 import gleam/list
 import gleam/option
 import gleam/result
+import internal/flash
+import wisp
 
 pub type PageProp {
   ErrorProp(name: String, value: json.Json)
@@ -19,6 +21,7 @@ pub type PageProp {
 
 pub type RenderContext {
   RenderContext(
+    req: wisp.Request,
     component: String,
     version: String,
     first_load: Bool,
@@ -98,7 +101,12 @@ pub fn page_object_to_json(po: PageObject, ctx: RenderContext) -> json.Json {
     option.Some(shared) -> list.append(merge_resolved, [shared])
   }
 
-  json.object(shared_resolved)
+  let flash_resolved = case resolve_flash(ctx) {
+    [] -> shared_resolved
+    list -> list.append(shared_resolved, [#("flash", json.object(list))])
+  }
+
+  json.object(flash_resolved)
 }
 
 fn should_resolve(ctx: RenderContext, p: PageProp) {
@@ -238,5 +246,18 @@ fn resolve_map_prop(p: PageProp) -> #(String, json.Json) {
       }
     }
     ErrorProp(name, value) -> #("errors", json.object([#(name, value)]))
+  }
+}
+
+fn resolve_flash(ctx: RenderContext) -> List(#(String, json.Json)) {
+  case flash.get_flash(ctx.req) {
+    option.None -> []
+    option.Some(d) -> {
+      dict.keys(d)
+      |> list.map(fn(key: String) {
+        let assert Ok(value) = dict.get(d, key)
+        #(key, json.string(value))
+      })
+    }
   }
 }

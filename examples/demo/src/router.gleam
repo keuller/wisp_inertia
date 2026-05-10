@@ -52,6 +52,7 @@ pub fn handle_request(req: Request) -> Response {
 
   case segments {
     [] -> handle_index(req)
+    ["flash"] -> handle_flash_data(req)
     _ -> wisp.not_found()
   }
 }
@@ -68,4 +69,9 @@ fn handle_index(req: wisp.Request) -> wisp.Response {
     option.None,
   )
   |> inertia.render(req)
+}
+
+fn handle_flash_data(req: wisp.Request) -> wisp.Response {
+  inertia.add_flash(req, "message", "Test flash message...")
+  |> inertia.redirect("/")
 }

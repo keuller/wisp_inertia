@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.0 - 2026-05-10
+
+- Added support for Flash messages
+
 ## v0.6.0 - 2026-05-08
 
 - Added support for Shared props
