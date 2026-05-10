@@ -30,7 +30,7 @@ packages = [
   { name = "simplifile", version = "2.4.0", build_tools = ["gleam"], requirements = ["filepath", "gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "7C18AFA4FED0B4CE1FA5B0B4BAC1FA1744427054EA993565F6F3F82E5453170D" },
   { name = "sqlight", version = "1.1.0", build_tools = ["gleam"], requirements = ["esqlite", "gleam_stdlib"], otp_app = "sqlight", source = "hex", outer_checksum = "ECA1A4B45C35EB9EFCEEB7FAAC7BF5D8B2C777A7C1FC8A9C12CB67D54CED42E7" },
   { name = "wisp", version = "2.2.2", build_tools = ["gleam"], requirements = ["directories", "exception", "filepath", "gleam_crypto", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "houdini", "logging", "marceau", "mist", "simplifile"], otp_app = "wisp", source = "hex", outer_checksum = "5FF5F1E288C3437252ABB93D8F9CF42FF652CE7AD54480CFE736038DC09C4F22" },
-  { name = "wisp_inertia", version = "0.7.0", build_tools = ["gleam"], requirements = ["file_streams", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "globlin", "globlin_fs", "mist", "simplifile", "wisp"], source = "local", path = "../.." },
+  { name = "wisp_inertia", version = "0.7.1", build_tools = ["gleam"], requirements = ["file_streams", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "globlin", "globlin_fs", "mist", "simplifile", "wisp"], source = "local", path = "../.." },
 ]
 
 [requirements]

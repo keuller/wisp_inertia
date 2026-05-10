@@ -4,7 +4,8 @@
   "description": "Todo Web app",
   "type": "module",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "@inertiajs/vue3": "^3.0.3",

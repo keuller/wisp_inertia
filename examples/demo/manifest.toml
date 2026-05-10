@@ -28,7 +28,7 @@ packages = [
   { name = "platform", version = "1.0.0", build_tools = ["gleam"], requirements = [], otp_app = "platform", source = "hex", outer_checksum = "8339420A95AD89AAC0F82F4C3DB8DD401041742D6C3F46132A8739F6AEB75391" },
   { name = "simplifile", version = "2.4.0", build_tools = ["gleam"], requirements = ["filepath", "gleam_stdlib"], otp_app = "simplifile", source = "hex", outer_checksum = "7C18AFA4FED0B4CE1FA5B0B4BAC1FA1744427054EA993565F6F3F82E5453170D" },
   { name = "wisp", version = "2.2.2", build_tools = ["gleam"], requirements = ["directories", "exception", "filepath", "gleam_crypto", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "houdini", "logging", "marceau", "mist", "simplifile"], otp_app = "wisp", source = "hex", outer_checksum = "5FF5F1E288C3437252ABB93D8F9CF42FF652CE7AD54480CFE736038DC09C4F22" },
-  { name = "wisp_inertia", version = "0.7.0", build_tools = ["gleam"], requirements = ["file_streams", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "globlin", "globlin_fs", "mist", "simplifile", "wisp"], source = "local", path = "../.." },
+  { name = "wisp_inertia", version = "0.7.0", build_tools = ["gleam"], requirements = ["file_streams", "gleam_erlang", "gleam_http", "gleam_json", "gleam_stdlib", "globlin", "globlin_fs", "mist", "simplifile", "wisp"], otp_app = "wisp_inertia", source = "hex", outer_checksum = "CA846C1017349BBEBB5E05E09160E4B1331FDC7DF8270E6D972263222905E5A1" },
 ]
 
 [requirements]
@@ -40,4 +40,4 @@ gleam_time = { version = ">= 1.8.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
 mist = { version = ">= 6.0.3 and < 7.0.0" }
 wisp = { version = ">= 2.2.2 and < 3.0.0" }
-wisp_inertia = { path = "../../" }
+wisp_inertia = { version = ">= 0.7.0 and < 1.0.0" }

@@ -1,5 +1,6 @@
 import file_streams/file_stream
 import file_streams/file_stream_error
+import gleam/erlang/application
 import gleam/list
 import gleam/result
 import gleam/string
@@ -8,12 +9,13 @@ import globlin_fs
 import internal/context
 import internal/errors
 import internal/manifest
+import simplifile
 
 pub fn exist_template() -> Result(Bool, errors.InertiaError) {
   let assert Ok(pattern) = globlin.new_pattern("**/index.html")
   let files =
     globlin_fs.glob(pattern, returning: globlin_fs.RegularFiles)
-    |> result.map_error(errors.FileError)
+    |> result.map_error(fn(_) { errors.FileError })
 
   case files {
     Ok([_]) -> Ok(True)
@@ -22,14 +24,21 @@ pub fn exist_template() -> Result(Bool, errors.InertiaError) {
 }
 
 pub fn has_manifest() -> Result(String, errors.InertiaError) {
+  let app_name = context.get_orelse("app", "")
+  let assert Ok(app) = application.priv_directory(app_name)
+
   let assert Ok(pattern) = globlin.new_pattern("**/manifest.json")
   let files =
     globlin_fs.glob(pattern, returning: globlin_fs.RegularFiles)
-    |> result.map_error(errors.FileError)
+    |> result.map_error(fn(_) { errors.FileError })
 
   case files {
     Ok([f]) -> Ok(f)
-    _ -> Error(errors.ManifestNotFound)
+    _ ->
+      case simplifile.is_file(app <> "/static/.vite/manifest.json") {
+        Ok(True) -> Ok(app <> "/static/.vite/manifest.json")
+        _ -> Error(errors.ManifestNotFound)
+      }
   }
 }
 

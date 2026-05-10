@@ -20,6 +20,7 @@ export default defineConfig({
     vue(),
   ],
   build: {
+    minify: true,
     manifest: true,
     outDir: "priv/static",
     rollupOptions: {

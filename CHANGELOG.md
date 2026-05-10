@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.1 - 2026-05-10
+
+- Fixed an issue on Prod build that didn't find the `manifest.json` file
+- Added Docker support for DEMO example
+
 ## v0.7.0 - 2026-05-10
 
 - Added support for Flash messages
